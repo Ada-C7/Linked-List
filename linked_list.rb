@@ -6,7 +6,7 @@ class Node
 
   def initialize(value)
     @data = value
-    @next = next
+    @next = nil
   end
 end
 
@@ -19,30 +19,66 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    current = 0
+    current.next = head
+    @head = value
+    return @head
   end
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    current = 0
+    if current == nil
+      return
+    elsif current == value
+      return current
+    else
+      current += 1
+    end
   end
 
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    max = 0
+    current = 0
+
+    if current.value == nil
+      return
+    elsif current.value > max
+      max = current.value
+      current += 1
+    else
+      return max
+    end
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    puts "Not implemented"
+    min = 0
+    current = 0
+
+    if current.value == nil
+      return
+    elsif current.value < min
+      min = current.value
+      current += 1
+    else
+      return min
+    end
   end
 
   # method that returns the length of the singly linked list
   def length
-    puts "Not implemented"
+    count = 0
+    if current == nil
+      return
+    else
+      count += 1
+      return count
+    end
   end
 
   # method to return the value of the nth element from the beginning
@@ -59,12 +95,28 @@ class LinkedList
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    count = 0
+    if current == nil
+      print current
+      return
+    else
+      count += 1
+      print current
+      return
+    end
   end
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    current = 0
+    if current == nil
+      return
+    elsif current == value
+      current.next = current.next.next
+      return current
+    else
+      current += 1
+    end
   end
 
   # method to reverse the singly linked list
