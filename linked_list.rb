@@ -19,103 +19,149 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    current = 0
-    current.next = head
-    @head = value
-    return @head
+    node_to_insert = Node.new(value) # setting up our new node
+
+    node_to_insert.next = @head # telling new node to point at current head
+
+    @head = node_to_insert # setting up the new head
   end
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    current = 0
-    if current == nil
-      return
-    elsif current == value
-      return current
-    else
-      current += 1
+    current = @head
+
+    while current != nil
+      if current.data == value
+        return true
+      end
+      current = current.next
     end
+    return false # we have checked everything
   end
 
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
     max = 0
-    current = 0
+    current = @head
 
-    if current.value == nil
-      return
-    elsif current.value > max
-      max = current.value
-      current += 1
-    else
-      return max
+    while current != nil
+      if current.data > max
+        max = current.data
+      end
+      current = current.next
     end
+    return max
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    min = 0
-    current = 0
+    current = @head
 
-    if current.value == nil
-      return
-    elsif current.value < min
-      min = current.value
-      current += 1
-    else
-      return min
+    if current == nil
+      return nil
     end
+
+    min = current.data
+
+    while current != nil
+      if current.data < min
+        min = current.data
+      end
+      current = current.next
+    end
+    return min
   end
 
   # method that returns the length of the singly linked list
   def length
+    current = @head
     count = 0
-    if current == nil
-      return
-    else
-      count += 1
-      return count
+
+    if @head == nil
+      return 0
     end
+
+    while current != nil
+      count += 1
+      current = current.next
+    end
+    return count
   end
 
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    current = @head
+    count = 0
+
+    while current != nil
+      if count == n
+        return current.data
+      end
+      current = current.next
+      count += 1
+    end
+    return nil
   end
 
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    current = @head
+    previous = nil
+
+    node_to_insert = Node.new(value)
+
+    if current == nil
+      @head = node_to_insert
+      return
+    end
+
+    if @head.data > node_to_insert.data
+      insert(value)
+      return
+    end
+
+    while current != nil
+      if current.data > node_to_insert.data
+        previous.next = node_to_insert
+        node_to_insert.next = current
+        return
+      end
+      previous = current
+      current = current.next
+    end
+    previous.next = node_to_insert # we went throught the whole list and didn't find a larger value
   end
 
   # method to print all the values in the linked list
   def visit
-    count = 0
-    if current == nil
-      print current
-      return
-    else
-      count += 1
-      print current
-      return
+    current = @head # we have to tell it where to start (similar to starting at 0)
+
+    while current != nil
+      print current.data
+      current = current.next # increments
     end
   end
 
   # method to delete the first node found with specified value
   def delete(value)
-    current = 0
-    if current == nil
-      return
-    elsif current == value
-      current.next = current.next.next
-      return current
-    else
-      current += 1
+    current = @head
+    previous = nil
+
+    if @head.data == value
+      @head = @head.next
+    end
+
+    while current != nil
+      if current.data == value
+        previous.data = current.next
+        return
+      end
+      current = current.next
     end
   end
 
