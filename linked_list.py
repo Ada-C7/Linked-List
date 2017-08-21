@@ -39,17 +39,19 @@ class LinkedList(object):
 
     # method to find if the linked list contains a node with specified value
     # returns true if found, false otherwise
-    def search(value):
-        pass
-
-    
+    def search(self, value):
+        current_node = self.__head
+        while current_node != None:
+            if current_node.get_data() == value:
+                return True
+            current_node = current_node.next_node()
+        return False
 
     # method to return the max value in the linked list
     # returns the data value and not the node
     def find_max(self):
         if self.__head == None:
             return "None"
-
         node = self.__head
         max = node.get_data()
         while node.next_node != None:
@@ -57,8 +59,6 @@ class LinkedList(object):
                 max = node.get_data()
             node = node.next_node
         return(max)
-
-
 
     # # method to return the min value in the linked list
     # # returns the data value and not the node
