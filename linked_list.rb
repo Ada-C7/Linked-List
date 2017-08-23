@@ -174,20 +174,79 @@ class LinkedList
   ## Advanced Exercises
   # returns the value at the middle element in the singly linked list
   def find_middle_value
-    puts "Not implemented"
+
+    if @head == nil
+      return
+    end
+
+    if @head.next == nil
+      return @head.data
+    end
+
+    slow = @head
+    fast = @head.next
+
+    while fast != nil
+      slow = slow.next
+      fast = fast.next
+      if fast != nil
+        fast = fast.next
+      end
+      return slow.data
+    end
+
   end
 
   # find the nth node from the end and return its value
   # assume indexing starts at 0 while counting to n
   def find_nth_from_end(n)
-    puts "Not implemented"
+    current = @head
+    length = length
+    count = 0
+    # length - n is the node we are looking for
+    spot = length - n
+
+    if @head == nil
+      return
+    end
+
+    # while current is less than that nth spot, increment it
+    while current < spot
+      # current needs to get to that nth spot
+      current = current.next
+      count += 1
+      # when it is that nth spot, return it's value
+      if count == spot
+        return current.data
+      end
+    end
+
   end
 
   # checks if the linked list has a cycle. A cycle exists if any node in the
   # linked list links to a node already visited.
   # returns true if a cycle is found, false otherwise.
   def has_cycle
-    puts "Not implemented"
+
+    if @head == nil || @head.next == nil
+      return false
+    end
+
+    slow = @head
+    fast = @head
+
+    while fast != nil
+      slow = slow.next
+      fast = fast.next
+
+      if fast != nil
+        fast = fast.next
+      end
+      if fast == slow
+        return true
+      end
+      return false
+    end
   end
 
   # Creates a cycle in the linked list for testing purposes
