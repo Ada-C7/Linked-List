@@ -154,13 +154,15 @@ class LinkedList
 
     if @head.data == value
       @head = @head.next
+      return
     end
 
     while current != nil
       if current.data == value
-        previous.data = current.next
+        previous.next = current.next
         return
       end
+      previous = current
       current = current.next
     end
   end
@@ -168,7 +170,17 @@ class LinkedList
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
-    puts "Not implemented"
+    current = @head
+    previous = nil
+
+
+    while current != nil
+      temp = current.next # holding the place of current next
+      current.next = previous
+      previous = current # pointing at the one behind it
+      current = temp # incrementing current
+    end
+    @head = previous # reassign head to the last node I touched
   end
 
   ## Advanced Exercises
@@ -201,26 +213,27 @@ class LinkedList
   # assume indexing starts at 0 while counting to n
   def find_nth_from_end(n)
     current = @head
-    length = length
+    length = length()
     count = 0
     # length - n is the node we are looking for
-    spot = length - n
+    spot = length - n - 1
 
     if @head == nil
-      return
+      return nil
     end
 
-    # while current is less than that nth spot, increment it
-    while current < spot
+    if n > length
+      return nil
+    end
+
+    # while count is less than that nth spot, increment it
+    while count < spot
       # current needs to get to that nth spot
       current = current.next
       count += 1
-      # when it is that nth spot, return it's value
-      if count == spot
-        return current.data
-      end
     end
-
+    # when it is that nth spot, return it's value
+    return current.data
   end
 
   # checks if the linked list has a cycle. A cycle exists if any node in the
@@ -245,8 +258,8 @@ class LinkedList
       if fast == slow
         return true
       end
-      return false
     end
+    return false
   end
 
   # Creates a cycle in the linked list for testing purposes
