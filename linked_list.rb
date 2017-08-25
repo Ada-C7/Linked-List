@@ -58,7 +58,15 @@ class LinkedList
 
   # method that returns the length of the singly linked list
   def length
-    puts "Not implemented"
+    current = @head
+    length = 0
+
+    while current != nil
+      length += 1
+      current = current.next
+    end
+
+    return length
   end
 
   # method to return the value of the nth element from the beginning
@@ -168,6 +176,10 @@ value = my_linked_list.search(5)
 puts "Found 5? #{value}"
 value = my_linked_list.search(100)
 puts "Found 100? #{value}"
+
+# length test
+value = my_linked_list.length
+puts "Length of list: #{value}"
 
 # print all elements
 puts "Printing elements in the linked list:"
