@@ -31,7 +31,17 @@ class LinkedList
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    current = @head
+
+    while current != nil
+      if current.data == value
+        return true
+      end
+
+      current = current.next
+    end
+
+    return false
   end
 
   # method to return the max value in the linked list
@@ -152,6 +162,12 @@ value = my_linked_list.find_nth_from_beginning(1)
 puts "BUG: Value at index 1 should be 3 and is #{value}" if value != 3
 value = my_linked_list.find_nth_from_beginning(0)
 puts "BUG: Value at index 0 should be 1 and is #{value}" if value != 1
+
+# search for element
+value = my_linked_list.search(5)
+puts "Found 5? #{value}"
+value = my_linked_list.search(100)
+puts "Found 100? #{value}"
 
 # print all elements
 puts "Printing elements in the linked list:"
