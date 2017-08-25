@@ -19,7 +19,13 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    next_node = Node.new(value)
+
+    if @head != nil
+      next_node.next = @head
+    end
+
+    @head = next_node
   end
 
   # method to find if the linked list contains a node with specified value
