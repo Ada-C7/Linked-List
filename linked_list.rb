@@ -65,7 +65,13 @@ class LinkedList
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    current = @head
+
+    while current != nil
+      puts current.data
+
+      current = current.next
+    end
   end
 
   # method to delete the first node found with specified value
