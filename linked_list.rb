@@ -54,7 +54,17 @@ class LinkedList
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    current = @head
+    index = 0
+
+    while current != nil
+      if index == n
+        return current.data
+      else
+        current = current.next
+        index += 1
+      end
+    end
   end
 
   # method to insert a new node with specific data value, assuming the linked
