@@ -19,58 +19,149 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    temp = ""
+    if @head != nil
+      temp = @head
+      @head = Node.new(value)
+      @head.next = temp
+    else
+      @head = Node.new(value)
+    end
   end
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    node = @head
+      while node != nil
+        if node == value
+          return true
+        end
+        node = node.next
+      end
+      return false
   end
 
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    node = @head
+    max = @head.data
+    until node == nil
+      if node.data > max
+        max = node.data
+      end
+      node = node.next
+    end
+    return max
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    puts "Not implemented"
+    node = @head
+    min = @head.data
+    until node == nil
+      if node.data < min
+        min = node.data
+      end
+      node = node.next
+    end
+      return min
   end
 
   # method that returns the length of the singly linked list
   def length
-    puts "Not implemented"
+    node = @head
+    counter = 0
+    until node == nil
+      counter += 1
+      node = node.next
+    end
+    return counter
   end
 
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    node = @head
+    counter = 0
+    while node != nil
+      if counter == n
+        return node.data
+      else
+        node = node.next
+        counter += 1
+      end
+    end
+    return "whaaaat"
   end
 
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    node = @head
+    newNode = Node.new(value)
+    if value <= node.data
+      self.insert(value)
+      return
+    end
+    until node == nil
+      if node.next == nil
+        node.next = newNode
+        return
+      elsif value <= node.next.data
+        temp = node.next
+        node.next = newNode
+        node.next.next = temp
+        return
+      else
+        node = node.next
+      end
+    end
   end
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    node = @head
+    while node != nil
+      print node.data
+      print " "
+      node = node.next
+    end
+    puts " "
   end
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    node = @head
+    if node.data == value
+      @head = node.next
+      return
+    end
+    until node == nil
+      if node.next.data == value
+        node.next = node.next.next
+        return
+      else
+        node = node.next
+      end
+    end
   end
 
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
-    puts "Not implemented"
+    node = @head
+    rightNode = node.next
+    leftNode = nil
+    while rightNode != nil
+      node.next = leftNode
+      leftNode = node
+      node = rightNode
+      rightNode = node.next
+    end
+    @head = node
   end
 
   ## Advanced Exercises
@@ -138,6 +229,7 @@ my_linked_list.visit
 # Insert ascending
 puts "Adding 4 in ascending order."
 my_linked_list.insert_ascending(4)
+
 # check newly inserted value
 puts "Checking values by calling find_nth_from_beginning method."
 value = my_linked_list.find_nth_from_beginning(2)
