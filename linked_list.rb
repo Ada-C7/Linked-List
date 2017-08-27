@@ -19,77 +19,243 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    new_node = Node.new(value)
+
+    if @head == nil
+      @head = new_node
+    else
+      new_node.next = @head
+      @head = new_node
+    end
   end
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    current = @head
+    until current == nil
+      if current.data == value
+        return true
+      end
+      current = current.next
+    end
+    return false
   end
 
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    current = @head
+    max = current
+    until current == nil
+      if current.data > max.data
+        max = current
+      end
+      current = current.next
+    end
+    return max.data
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    puts "Not implemented"
+    current = @head
+    min = current.data # not sure why in the previous menthod couldn't use .data here
+    until current == nil
+      if current.data < min
+        min = current
+      end
+      current = current.next
+    end
+    return min
   end
 
   # method that returns the length of the singly linked list
   def length
-    puts "Not implemented"
+    current = @head
+    count = 0
+
+    if @head == nil
+      return 0
+    end
+
+    while current != nil
+      count += 1
+      current = current.next
+    end
+    return count
   end
 
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    count = 0
+    current = @head
+
+    until current == nil
+      if count == n
+        return current.data
+      end
+      count += 1
+      current = current.next
+    end
+
+    # # another way to do it below
+    # n.times do
+    #   if current.next == nil
+    #     return false
+    #   end
+    #   current = current.next
+    # end
+    # return current.data
   end
 
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    new_node = Node.new(value)
+    current = @head
+
+    if current == nil # this is an empty linked list
+      @head = new_node
+      return
+    end
+
+    if current.data >= new_node.data # this is a linked list where the first value is already larger
+      insert(value)
+      return
+    end
+
+    while current.next != nil && current.next.data < new_node.data
+      current = current.next # keep moving until you've found the appropriate insertion point
+    end
+    # at this point, the new node should go between current and current.next
+    new_node.next = current.next # new_node's pointer is now pointer to current.next
+    current.next = new_node # current's pointer is now pointer to new_node
   end
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    current = @head
+
+    until current == nil
+      puts current.data
+      current = current.next
+    end
   end
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    current = @head
+
+    if current == nil # empty linked list
+      return
+    end
+
+    if current.data == value # we need to delete the head
+      @head = current.next # the head is reassigned to be the next node
+      return
+    end
+
+    while current != nil
+      if current.next.data == value # the current node's next is the value to be deleted
+        current.next = current.next.next # current node's pointer now points at the next next node, skipping node to be deleted
+        return
+      end
+      current = current.next
+    end
   end
 
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
-    puts "Not implemented"
+    current = @head
+    previous = nil
+
+    if current == nil # empty linked list
+      return
+    end
+
+    while current != nil
+      temp = current.next
+      current.next = previous
+
+      # move to next nodes
+      previous = current
+      current = temp
+    end
+
+    @head = previous # the head is now the last node
   end
 
   ## Advanced Exercises
   # returns the value at the middle element in the singly linked list
   def find_middle_value
-    puts "Not implemented"
+    return if @head == nil
+
+    if @head.next == nil
+      return @head
+    end
+
+    slow = @head
+    fast = @head.next
+
+    while fast != nil
+      slow = slow.next
+      fast = fast.next
+      if fast != nil
+        fast = fast.next
+      end
+    end
+    return slow.data
   end
 
   # find the nth node from the end and return its value
   # assume indexing starts at 0 while counting to n
   def find_nth_from_end(n)
-    puts "Not implemented"
+    current = @head
+    tail = @head
+    i = 0
+
+    until i == n
+      current = current.next
+      i += 1
+    end
+
+    until current.next == nil
+      current = current.next
+      tail = tail.next
+    end
+
+    return tail.data
   end
 
   # checks if the linked list has a cycle. A cycle exists if any node in the
   # linked list links to a node already visited.
   # returns true if a cycle is found, false otherwise.
   def has_cycle
-    puts "Not implemented"
+    slow = @head
+    fast = @head
+
+    if @head == nil
+      return false
+    end
+
+    if @head.next == nil
+      return false
+    end
+
+    while fast != nil
+      slow = slow.next
+      fast = fast.next
+      if fast != nil
+        fast = fast.next # similar to finding middle value, fast moves twice as fast
+      end
+      if fast == slow # if there is a cycle, will keep going until fast catches slow
+        return true
+      end
+    end
+    return false # otherwise, there is no cycle
   end
 
   # Creates a cycle in the linked list for testing purposes
@@ -138,6 +304,11 @@ my_linked_list.visit
 # Insert ascending
 puts "Adding 4 in ascending order."
 my_linked_list.insert_ascending(4)
+
+# print all elements
+puts "Printing elements in the linked list:"
+my_linked_list.visit
+
 # check newly inserted value
 puts "Checking values by calling find_nth_from_beginning method."
 value = my_linked_list.find_nth_from_beginning(2)
@@ -165,7 +336,7 @@ puts "Confirming min and max values in the linked list."
 min = my_linked_list.find_min
 puts "BUG: Min value should be 1 and not #{min}" if min != 1
 max = my_linked_list.find_max
-puts "BUG: Max value should be 5 and not #{max}" if max != 6
+puts "BUG: Max value should be 6 and not #{max}" if max != 6
 
 # delete value
 puts "Deleting node with value 5 from the linked list."
