@@ -208,13 +208,11 @@ class LinkedList
   # linked list links to a node already visited.
   # returns true if a cycle is found, false otherwise.
   def has_cycle
-    #JUST REALIZED THIS ONLY WORKS IF CYCLE STARTS BACK AT HEAD - Will work on it more. 
-    node = @head
-    i = node
-    j = node
-    while j != nil
-      node = node.next
-      j = node
+    i = @head
+    j = @head
+    while j.next
+      i = i.next
+      j = j.next.next
       if i == j
         return true
       end
