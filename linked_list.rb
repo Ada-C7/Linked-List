@@ -40,6 +40,15 @@ class LinkedList
   # returns the data value and not the node
   def find_max
     # puts "Not implemented"
+    current = @head
+    max = current.data
+    while current.next != nil
+      if max < current.next.data
+        max = current.next.data
+      end
+      current = current.next
+    end
+    return max
   end
 
   # method to return the min value in the linked list
@@ -188,12 +197,12 @@ puts "Confirming length of the linked list."
 my_linked_list_length = my_linked_list.length
 puts "BUG: Length should be 5 and not #{my_linked_list_length}" if my_linked_list_length != 5
 #
-# # find min and max
-# puts "Confirming min and max values in the linked list."
-# min = my_linked_list.find_min
-# puts "BUG: Min value should be 1 and not #{min}" if min != 1
-# max = my_linked_list.find_max
-# puts "BUG: Max value should be 5 and not #{max}" if max != 6
+# find min and max
+puts "Confirming min and max values in the linked list."
+min = my_linked_list.find_min
+puts "BUG: Min value should be 1 and not #{min}" if min != 1
+max = my_linked_list.find_max
+puts "BUG: Max value should be 5 and not #{max}" if max != 6
 #
 # # delete value
 # puts "Deleting node with value 5 from the linked list."
