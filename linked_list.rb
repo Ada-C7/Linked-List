@@ -155,7 +155,7 @@ class LinkedList
       return
     end
 
-    if @head == value
+    if @head.data == value
       @head = @head.next
       return
     end
@@ -252,7 +252,6 @@ my_linked_list.visit
 # Insert ascending
 puts "Adding 4 in ascending order."
 my_linked_list.insert_ascending(4)
-my_linked_list.visit
 # check newly inserted value
 puts "Checking values by calling find_nth_from_beginning method."
 value = my_linked_list.find_nth_from_beginning(2)
