@@ -173,6 +173,59 @@ func (ll LinkedList) FindMiddleValue() (int, error) {
 	return middle.data, nil
 }
 
+func (ll LinkedList) FindNthFromEnd(n int) (int, error) {
+	current := ll.head
+
+	for i := 0; i <= n; i++ {
+		if current == nil {
+			return -1, fmt.Errorf("There is no element %v from the end.", n)
+		}
+		current = current.next
+	}
+
+	nthBehind := ll.head
+
+	for current != nil {
+		current = current.next
+		nthBehind = nthBehind.next
+	}
+
+	return nthBehind.data, nil
+}
+
+func (ll *LinkedList) CreateCycle() {
+	current := ll.head
+
+	for current.next != nil {
+		current = current.next
+	}
+
+	current.next = ll.head
+}
+
+func (ll LinkedList) HasCycle() bool {
+	if ll.head == nil {
+		return false
+	}
+
+	slow := ll.head
+	fast := ll.head.next
+
+	for fast != nil {
+		if fast.next != nil {
+			fast = fast.next.next
+		} else {
+			return false
+		}
+		slow = slow.next
+
+		if slow == fast {
+			return true
+		}
+	}
+	return false
+}
+
 func main() {
 	myLinkedList := LinkedList{}
 
@@ -213,6 +266,17 @@ func main() {
 			fmt.Println("FAILURE:", e)
 		} else {
 			fmt.Printf("Value at index %v is: %v\n", i, num)
+		}
+	}
+
+	// Find the value at the nth node from the end
+	fmt.Println("\nTesting FindNthFromEnd method. Current list is:")
+	myLinkedList.Visit()
+	for i := 0; i < 3; i++ {
+		if num, e := myLinkedList.FindNthFromEnd(i); e != nil {
+			fmt.Println("FAILURE:", e)
+		} else {
+			fmt.Printf("Value %v from the end is: %v\n", i, num)
 		}
 	}
 
@@ -277,6 +341,14 @@ func main() {
 		fmt.Println("Middle element is:", middle)
 	}
 
+	// Testing HasCycle
+	fmt.Println("\nThis list shouldn't have a cycle.")
+	fmt.Println("Does this list have a cycle?", myLinkedList.HasCycle())
+
+	fmt.Println("\nNow creating a cycle in the list.")
+	myLinkedList.CreateCycle()
+	fmt.Println("Does this list have a cycle?", myLinkedList.HasCycle())
+
 	// Testing that errors work
 	fmt.Println("\nMaking sure errors work properly on an empty linked list.")
 
@@ -287,6 +359,13 @@ func main() {
 		fmt.Println("FAILURE:", e)
 	} else {
 		fmt.Printf("Value of emptyLinkedList at index 0 is: %v\n", num)
+	}
+
+	// Shouldn't be able to find nth from the end in an empty list.
+	if num, e := emptyLinkedList.FindNthFromEnd(0); e != nil {
+		fmt.Println("FAILURE:", e)
+	} else {
+		fmt.Printf("Value of emptyLinkedList 0 from the end is: %v\n", num)
 	}
 
 	// Shouldn't be able to find min or max in an empty linked list.
