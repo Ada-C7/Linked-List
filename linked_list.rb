@@ -133,7 +133,7 @@ class LinkedList
     current = @head
 
     while current.next != nil
-      if current.next > value
+      if current.next.data > value
         new_node.next = current.next
         current.next = new_node
         return
@@ -172,8 +172,8 @@ class LinkedList
     end
 
     current = @head
-    while current != nil
-      if current.next == value
+    while current.next != nil
+      if current.next.data == value
         current.next = current.next.next
         return
       end
@@ -226,18 +226,56 @@ class LinkedList
     current = @head
 
     count = 0
-    while current !=nil
-end
+    while ((current !=nil) && (count != n))
+      count  +=1
+      current = current.next
+    end
 
+    if current == nil
+      puts "Fewer than n items in Linked List"
+      return
+    end
+
+    behind = @head
+    ahead = current
+    while ahead.next !=nil
+      ahead = ahead.next
+      behind = behind.next
+    end
+
+    return behind.data
 
   end
+
+
+
 
   # checks if the linked list has a cycle. A cycle exists if any node in the
   # linked list links to a node already visited.
   # returns true if a cycle is found, false otherwise.
   def has_cycle
-    puts "Not implemented"
+
+    if @head == nil || @head.next == nil
+      return false
+    end
+
+    slow = @head
+    fast = @head
+
+    while fast !=nil
+      fast = fast.next
+      slow = slow.next
+
+      if fast!= nil
+        fast = fast.next
+      end
+      if fast == slow
+        return true
+      end
+    end
+    return false
   end
+
 
   # Creates a cycle in the linked list for testing purposes
   # Assumes the linked list has at least one node
@@ -324,6 +362,11 @@ my_linked_list.visit
 puts "Confirming length of the linked list."
 my_linked_list_length = my_linked_list.length
 puts "BUG: Length should be 4 and not #{my_linked_list_length}" if my_linked_list_length != 4
+
+
+
+
+
 
 # delete value
 puts "Deleting node with value 1 from the linked list."
