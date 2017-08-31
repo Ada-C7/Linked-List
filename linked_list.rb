@@ -139,6 +139,16 @@ class LinkedList
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
     # puts "Not implemented"
+    current = @head
+    previous = nil
+
+    while current != nil
+      temp = current.next
+      current.next = previous
+      previous = current
+      current = temp
+    end
+    @head = previous
   end
 
   ## Advanced Exercises
