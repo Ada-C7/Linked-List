@@ -119,7 +119,21 @@ class LinkedList
   # method to delete the first node found with specified value
   def delete(value)
     # puts "Not implemented"
+
+    current = @head
+    while current != nil
+      if @head == nil
+        return
+      elsif @head.data == value
+        @head = current.next
+      elsif current.next == value
+        current.next = current.next.next
+      else
+        current = current.next
+      end
+    end
   end
+
 
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
@@ -221,9 +235,9 @@ puts "BUG: Min value should be 1 and not #{min}" if min != 1
 max = my_linked_list.find_max
 puts "BUG: Max value should be 5 and not #{max}" if max != 6
 #
-# # delete value
-# puts "Deleting node with value 5 from the linked list."
-# my_linked_list.delete(5)
+# delete value
+puts "Deleting node with value 5 from the linked list."
+my_linked_list.delete(5)
 # # print all elements
 # puts "Printing elements in the linked list:"
 # my_linked_list.visit
