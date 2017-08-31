@@ -154,6 +154,25 @@ func (ll *LinkedList) Reverse() {
 	ll.head = prev
 }
 
+func (ll LinkedList) FindMiddleValue() (int, error) {
+	if ll.head == nil {
+		return -1, errors.New("Cannot find middle value.")
+	}
+
+	middle := ll.head
+	end := ll.head.next
+
+	for end != nil {
+		middle = middle.next
+		if end.next != nil {
+			end = end.next.next
+		} else {
+			end = end.next
+		}
+	}
+	return middle.data, nil
+}
+
 func main() {
 	myLinkedList := LinkedList{}
 
@@ -235,6 +254,29 @@ func main() {
 	myLinkedList.Reverse()
 	myLinkedList.Visit()
 
+	// Finding middle element
+	fmt.Println("\nFinding middle element of the list:")
+	if middle, e := myLinkedList.FindMiddleValue(); e != nil {
+		fmt.Println("FAILURE:", e)
+	} else {
+		fmt.Println("Middle element is:", middle)
+	}
+
+	// Adding more elements and finding middle again.
+	fmt.Println("\nAdding 3 more elements & finding middle element again.")
+	myLinkedList.Insert(7)
+	myLinkedList.Insert(-2)
+	myLinkedList.Insert(-10)
+
+	fmt.Println("List is now:")
+	myLinkedList.Visit()
+
+	if middle, e := myLinkedList.FindMiddleValue(); e != nil {
+		fmt.Println("FAILURE:", e)
+	} else {
+		fmt.Println("Middle element is:", middle)
+	}
+
 	// Testing that errors work
 	fmt.Println("\nMaking sure errors work properly on an empty linked list.")
 
@@ -257,6 +299,13 @@ func main() {
 		fmt.Println("FAILURE:", e)
 	} else {
 		fmt.Println("Min value:", min)
+	}
+
+	// Shouldn't be able to find middle element in an empty linked list.
+	if middle, e := emptyLinkedList.FindMiddleValue(); e != nil {
+		fmt.Println("\nFAILURE:", e)
+	} else {
+		fmt.Println("\nMiddle element is:", middle)
 	}
 
 	// Length should be 0
