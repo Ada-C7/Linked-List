@@ -91,6 +91,57 @@ func (ll LinkedList) FindNthFromBeginning(n int) (int, error) {
 	return -1, fmt.Errorf("There is no element at index %v", n)
 }
 
+func (ll *LinkedList) InsertAscending(n int) {
+	if n <= ll.head.data || ll.head == nil {
+		newNode := Node{n, ll.head}
+		ll.head = &newNode
+		return
+	}
+	current := ll.head
+	for current.next != nil {
+		if n <= current.next.data {
+			newNode := Node{n, current.next}
+			current.next = &newNode
+			return
+		}
+		current = current.next
+	}
+	current.next = &Node{n, nil}
+}
+
+func (ll *LinkedList) Delete(n int) {
+	temp := ll.head
+	current := ll.head
+
+	for current != nil {
+		if current.data == n {
+			temp.next = current.next
+		}
+		temp = current
+		current = current.next
+	}
+}
+
+func (ll *LinkedList) Reverse() {
+
+	if ll.head == nil || ll.head.next == nil {
+		return
+	}
+
+	prev := ll.head
+	current := ll.head.next
+	prev.next = nil
+
+	for current != nil {
+		temp := current.next
+		current.next = prev
+		prev = current
+		current = temp
+	}
+
+	ll.head = prev
+}
+
 func main() {
 	myLinkedList := LinkedList{}
 
@@ -110,7 +161,7 @@ func main() {
 
 	// Confirming that max val and min val work
 	fmt.Println("\nMax value:", myLinkedList.FindMax())
-	fmt.Println("Max value:", myLinkedList.FindMin())
+	fmt.Println("Min value:", myLinkedList.FindMin())
 
 	// Validating length
 	fmt.Println("\nConfirming length of the linked list.")
@@ -125,4 +176,37 @@ func main() {
 			fmt.Printf("Value at index %v is: %v\n", i, num)
 		}
 	}
+
+	// Print all elements
+	fmt.Println("\nPrinting elements in the linked list:")
+	myLinkedList.Visit()
+
+	// Insert ascending
+	fmt.Println("\nAdding 4 in ascending order.")
+	myLinkedList.InsertAscending(4)
+
+	// Check newly inserted value
+	fmt.Println("Printing array with 4 added:")
+	myLinkedList.Visit()
+
+	// Delete value
+	fmt.Println("\nDeleting node with value 5 from the linked list:")
+	myLinkedList.Delete(5)
+	myLinkedList.Visit()
+
+	// Inserting two 6s
+	myLinkedList.InsertAscending(6)
+	myLinkedList.InsertAscending(6)
+	fmt.Println("\nInserting two 6s:")
+	myLinkedList.Visit()
+
+	// Deleting a 6
+	fmt.Println("\nDeleting a 6:")
+	myLinkedList.Delete(6)
+	myLinkedList.Visit()
+
+	// Reverse the linked list
+	fmt.Println("\nReversing the list:")
+	myLinkedList.Reverse()
+	myLinkedList.Visit()
 }
