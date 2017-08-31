@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -30,6 +31,7 @@ func (ll *LinkedList) Insert(val int) {
 
 func (ll LinkedList) Search(val int) bool {
 	current := ll.head
+
 	for current != nil {
 		if current.data == val {
 			return true
@@ -39,7 +41,11 @@ func (ll LinkedList) Search(val int) bool {
 	return false
 }
 
-func (ll LinkedList) FindMax() int {
+func (ll LinkedList) FindMax() (int, error) {
+	if ll.head == nil {
+		return -1, errors.New("No maximum value found.")
+	}
+
 	current := ll.head
 	max := ll.head.data
 
@@ -49,10 +55,14 @@ func (ll LinkedList) FindMax() int {
 		}
 		current = current.next
 	}
-	return max
+	return max, nil
 }
 
-func (ll LinkedList) FindMin() int {
+func (ll LinkedList) FindMin() (int, error) {
+	if ll.head == nil {
+		return -1, errors.New("No minimum value found.")
+	}
+
 	current := ll.head
 	min := ll.head.data
 
@@ -62,7 +72,7 @@ func (ll LinkedList) FindMin() int {
 		}
 		current = current.next
 	}
-	return min
+	return min, nil
 }
 
 func (ll LinkedList) Length() int {
@@ -92,12 +102,14 @@ func (ll LinkedList) FindNthFromBeginning(n int) (int, error) {
 }
 
 func (ll *LinkedList) InsertAscending(n int) {
-	if n <= ll.head.data || ll.head == nil {
+	if ll.head == nil || n <= ll.head.data {
 		newNode := Node{n, ll.head}
 		ll.head = &newNode
 		return
 	}
+
 	current := ll.head
+
 	for current.next != nil {
 		if n <= current.next.data {
 			newNode := Node{n, current.next}
@@ -116,6 +128,7 @@ func (ll *LinkedList) Delete(n int) {
 	for current != nil {
 		if current.data == n {
 			temp.next = current.next
+			return
 		}
 		temp = current
 		current = current.next
@@ -123,7 +136,6 @@ func (ll *LinkedList) Delete(n int) {
 }
 
 func (ll *LinkedList) Reverse() {
-
 	if ll.head == nil || ll.head.next == nil {
 		return
 	}
@@ -160,8 +172,16 @@ func main() {
 	fmt.Println("Is 10 in the list?", myLinkedList.Search(10))
 
 	// Confirming that max val and min val work
-	fmt.Println("\nMax value:", myLinkedList.FindMax())
-	fmt.Println("Min value:", myLinkedList.FindMin())
+	if max, e := myLinkedList.FindMax(); e != nil {
+		fmt.Println("\nFAILURE:", e)
+	} else {
+		fmt.Println("\nMax value:", max)
+	}
+	if min, e := myLinkedList.FindMin(); e != nil {
+		fmt.Println("FAILURE:", e)
+	} else {
+		fmt.Println("Min value:", min)
+	}
 
 	// Validating length
 	fmt.Println("\nConfirming length of the linked list.")
@@ -169,7 +189,7 @@ func main() {
 
 	// Find the value at the nth node
 	fmt.Println("\nConfirming values in the linked list using FindNthFromBeginning method.")
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 3; i++ {
 		if num, e := myLinkedList.FindNthFromBeginning(i); e != nil {
 			fmt.Println("FAILURE:", e)
 		} else {
@@ -194,6 +214,11 @@ func main() {
 	myLinkedList.Delete(5)
 	myLinkedList.Visit()
 
+	// Delete value not present
+	fmt.Println("\nDeleting node with value 10 should not change the list")
+	myLinkedList.Delete(10)
+	myLinkedList.Visit()
+
 	// Inserting two 6s
 	myLinkedList.InsertAscending(6)
 	myLinkedList.InsertAscending(6)
@@ -209,4 +234,46 @@ func main() {
 	fmt.Println("\nReversing the list:")
 	myLinkedList.Reverse()
 	myLinkedList.Visit()
+
+	// Testing that errors work
+	fmt.Println("\nMaking sure errors work properly on an empty linked list.")
+
+	emptyLinkedList := LinkedList{}
+
+	// Shouldn't be able to access an index that's empty.
+	if num, e := emptyLinkedList.FindNthFromBeginning(0); e != nil {
+		fmt.Println("FAILURE:", e)
+	} else {
+		fmt.Printf("Value of emptyLinkedList at index 0 is: %v\n", num)
+	}
+
+	// Shouldn't be able to find min or max in an empty linked list.
+	if max, e := emptyLinkedList.FindMax(); e != nil {
+		fmt.Println("\nFAILURE:", e)
+	} else {
+		fmt.Println("\nMax value:", max)
+	}
+	if min, e := emptyLinkedList.FindMin(); e != nil {
+		fmt.Println("FAILURE:", e)
+	} else {
+		fmt.Println("Min value:", min)
+	}
+
+	// Length should be 0
+	fmt.Println("\nConfirming length of emptyLinkedList.")
+	fmt.Println("Length is:", emptyLinkedList.Length())
+
+	// Visit should print nothing
+	fmt.Println("\nVisiting emptyLinkedList should print nothing:")
+	emptyLinkedList.Visit()
+
+	// Can AssertAscending on empty list
+	fmt.Println("\nChecking that we can AssertAscending on emptyLinkedList.")
+	fmt.Println("\nInserting 9:")
+	emptyLinkedList.InsertAscending(9)
+	emptyLinkedList.Visit()
+
+	fmt.Println("\nInserting 2:")
+	emptyLinkedList.InsertAscending(2)
+	emptyLinkedList.Visit()
 }
