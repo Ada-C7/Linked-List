@@ -55,6 +55,15 @@ class LinkedList
   # returns the data value and not the node
   def find_min
     # puts "Not implemented"
+    current = @head
+    min = current.data
+    while current.next != nil
+      if min > current.next.data
+        min = current.next.data
+      end
+      current = current.next
+    end
+    return min
   end
 
   # method that returns the length of the singly linked list
