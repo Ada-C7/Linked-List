@@ -94,6 +94,16 @@ class LinkedList
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
     # puts "Not implemented"
+    current = @head
+    i = 0
+    while current != nil
+        if i != n
+          i += 1
+          current = current.next
+        else
+          return current.data
+        end
+    end
   end
 
   # method to insert a new node with specific data value, assuming the linked
@@ -200,14 +210,14 @@ my_linked_list.insert(1)
 puts "Printing elements in the linked list:"
 my_linked_list.visit
 #
-# # Find the value at the nth node
-# puts "Confirming values in the linked list using find_nth_from_beginning method."
-# value = my_linked_list.find_nth_from_beginning(2)
-# puts "BUG: Value at index 2 should be 5 and is #{value}" if value != 5
-# value = my_linked_list.find_nth_from_beginning(1)
-# puts "BUG: Value at index 1 should be 3 and is #{value}" if value != 3
-# value = my_linked_list.find_nth_from_beginning(0)
-# puts "BUG: Value at index 0 should be 1 and is #{value}" if value != 1
+# Find the value at the nth node
+puts "Confirming values in the linked list using find_nth_from_beginning method."
+value = my_linked_list.find_nth_from_beginning(2)
+puts "BUG: Value at index 2 should be 5 and is #{value}" if value != 5
+value = my_linked_list.find_nth_from_beginning(1)
+puts "BUG: Value at index 1 should be 3 and is #{value}" if value != 3
+value = my_linked_list.find_nth_from_beginning(0)
+puts "BUG: Value at index 0 should be 1 and is #{value}" if value != 1
 #
 # # print all elements
 # puts "Printing elements in the linked list:"
@@ -272,9 +282,9 @@ my_linked_list.delete(5)
 # middle = my_linked_list.find_middle_value
 # puts "BUG: Middle value should be 4 and not #{middle}" if middle != 4
 #
-# # reverse the linked list
-# puts "Reversing the linked list."
-# my_linked_list.reverse
+# reverse the linked list
+puts "Reversing the linked list."
+my_linked_list.reverse
 # # print all elements
 # puts "Printing elements in the linked list:"
 # my_linked_list.visit
