@@ -47,13 +47,45 @@ class LinkedList
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    if @head == nil
+      puts "empty head. max is nil"
+      return nil
+    end
+
+    current = @head
+    max = current.data
+
+    while current != nil
+      if current.data > max
+        max = current.data
+      end
+
+      current = current.next
+    end
+
+    return max
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    puts "Not implemented"
+    if @head == nil
+      puts "head empty. min is nil"
+      return nil
+    end
+
+    current = @head
+    min = current.data
+
+    while current != nil
+      if current.data < min
+        min = current.data
+      end
+
+      current = current.next
+    end
+
+    return min
   end
 
   # method that returns the length of the singly linked list
@@ -88,7 +120,21 @@ class LinkedList
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    current = @head
+    new_node = Node.new(value)
+
+    if @head == nil || @head.data > value
+      new_node.next = @head
+      @head = new_node
+      return
+    end
+
+    while current.next != nil && current.next.data <= value
+      current = current.next
+    end
+
+    new_node.next = current.next
+    current.next = new_node
   end
 
   # method to print all the values in the linked list
@@ -104,7 +150,25 @@ class LinkedList
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    if @head == nil
+      puts "Error: Linked list empty - nothing to delete!"
+      return
+    end
+
+    if @head == value
+      @head = @head.next
+      return
+    end
+
+    current = @head
+    while current.next != nil
+      if current.next.data == value
+        current.next = current.next.next
+        return
+      end
+
+      current = current.next
+    end
   end
 
   # method to reverse the singly linked list
@@ -188,6 +252,7 @@ my_linked_list.visit
 # Insert ascending
 puts "Adding 4 in ascending order."
 my_linked_list.insert_ascending(4)
+my_linked_list.visit
 # check newly inserted value
 puts "Checking values by calling find_nth_from_beginning method."
 value = my_linked_list.find_nth_from_beginning(2)
