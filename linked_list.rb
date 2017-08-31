@@ -34,6 +34,14 @@ class LinkedList
   # returns true if found, false otherwise
   def search(value)
     # puts "Not implemented"
+    current = @head
+    while current.next != nil
+      if current.data == value
+        return current.index
+      else
+        current = current.next
+      end
+    end
   end
 
   # method to return the max value in the linked list
