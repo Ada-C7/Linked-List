@@ -26,19 +26,17 @@ class LinkedList
       current.next = @head
       @head = current
     end
-    return current
   end
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
     if @head == nil
-      puts "This list is empty"
-      return
+      false
     end
     current = @head
     until current.next == nil
-      if current == value
+      if current.data == value
         return true
       end
       current = current.next
