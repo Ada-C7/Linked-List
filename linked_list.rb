@@ -19,13 +19,24 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    newNode = Node.new(value)
+    if @head == nil
+      @head = newNode
+    else
+      newNode.next = @head
+      @head = newNode
+    end
   end
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    current = @head
+    while current.next != nil
+      return true if current.data == value
+      current = current.next
+    end
+    return false
   end
 
   # method to return the max value in the linked list
@@ -48,18 +59,45 @@ class LinkedList
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    index = 0
+    current = @head
+    if current
+      while index < n
+        current = current.next
+        index += 1
+      end
+      p current.data
+    end
+    # puts "Not implemented"
   end
 
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    current = @head
+    nextVal = nil
+    if current.next
+      nextVal = current.next.data
+      while nextVal <= value
+        current = current.next
+      end
+      temp = current.next
+      current.next = Node.new(value)
+      current.next.next = temp
+    else
+      current.next = Node.new(value)
+    end
+    # puts "Not implemented"
   end
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    current = @head
+    while current
+      puts current.data
+      current = current.next
+    end
+    # puts "Not implemented"
   end
 
   # method to delete the first node found with specified value
