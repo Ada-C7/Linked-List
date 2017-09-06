@@ -42,17 +42,41 @@ class LinkedList
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    current = @head
+    max = current.data
+    while current.next
+      current = current.next
+      if current.data > max
+        max = current.data
+      end
+    end
+    return max
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
+    current = @head
+    min = current.data
+    while current.next
+      current = current.next
+      if current.data < min
+        min = current.data
+      end
+    end
+    return min
     puts "Not implemented"
   end
 
   # method that returns the length of the singly linked list
   def length
+    counter = 1
+    current = @head
+    while current.next
+      current = current.next
+      counter += 1
+    end
+    return counter
     puts "Not implemented"
   end
 
@@ -75,19 +99,25 @@ class LinkedList
   # list is sorted in ascending order
   def insert_ascending(value)
     current = @head
-    nextVal = nil
-    if current.next
-      nextVal = current.next.data
-      while nextVal <= value
-        current = current.next
+    prevVal = nil
+    # nextVal = nil
+      until value < current.data
+        puts "current.data is #{current.data}"
+        prevVal = current
+        current.next ? current = current.next : break
       end
-      temp = current.next
-      current.next = Node.new(value)
-      current.next.next = temp
-    else
-      current.next = Node.new(value)
+
+    new_node = Node.new(value)
+
+    if value > current.data && !current.next
+      current.next = new_node
+    else # no next
+      puts "current.data is #{current.data}"
+      prevVal.next = new_node
+      new_node.next = current
+
     end
-    # puts "Not implemented"
+    # # puts "Not implemented"
   end
 
   # method to print all the values in the linked list
@@ -186,7 +216,7 @@ value = my_linked_list.find_nth_from_beginning(1)
 puts "BUG: Value at index 1 should be 3 and is #{value}" if value != 3
 
 # Insert ascending
-puts "Adding 6 in ascening order."
+puts "Adding 6 in ascending order."
 my_linked_list.insert_ascending(6)
 
 # print all elements
