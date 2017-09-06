@@ -65,7 +65,6 @@ class LinkedList
       end
     end
     return min
-    puts "Not implemented"
   end
 
   # method that returns the length of the singly linked list
@@ -77,7 +76,6 @@ class LinkedList
       counter += 1
     end
     return counter
-    puts "Not implemented"
   end
 
   # method to return the value of the nth element from the beginning
@@ -102,7 +100,6 @@ class LinkedList
     prevVal = nil
     # nextVal = nil
       until value < current.data
-        puts "current.data is #{current.data}"
         prevVal = current
         current.next ? current = current.next : break
       end
@@ -112,7 +109,6 @@ class LinkedList
     if value > current.data && !current.next
       current.next = new_node
     else # no next
-      puts "current.data is #{current.data}"
       prevVal.next = new_node
       new_node.next = current
 
@@ -132,19 +128,73 @@ class LinkedList
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    current = @head
+    prevNode = nil
+    if current.data == value
+      @head = current.next
+      return
+    end
+    while current.data != value
+      prevNode = current
+      current.next ? current = current.next : break
+    end
+
+    if current.data == value
+      if current.next
+        prevNode.next = current.next
+      else
+        prevNode.next = nil
+      end
+    else # not found
+      return false
+    end
+
   end
 
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
-    puts "Not implemented"
+    puts "THIS MAKES MY HEAD HURT"
+    current = @head
+    previous = nil
+    temp = current.next
+    until current == nil
+      temp = current.next
+      current.next = previous
+      previous = current
+      current = temp
+    end
+    @head = previous
   end
 
   ## Advanced Exercises
   # returns the value at the middle element in the singly linked list
   def find_middle_value
-    puts "Not implemented"
+    counter = 0
+    current = @head
+    while current
+      current = current.next
+      counter += 1
+    end
+
+    middle = nil
+
+    if counter % 2 == 0
+      middle = counter / 2
+    else
+      middle = (counter + 1 ) / 2
+    end
+
+    newCounter = 0
+
+    current = @head
+
+    until newCounter = middle
+      current = current.next
+      counter += 1
+    end
+
+    return current.data
   end
 
   # find the nth node from the end and return its value
