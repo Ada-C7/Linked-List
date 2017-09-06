@@ -6,104 +6,288 @@ class Node
 
   def initialize(value)
     @data = value
-    @next = next
+    # @next = next
+    @next = nil
   end
 end
 
 # Defines the singly linked list
 class LinkedList
   def initialize
-    @head = nil # keep the head private. Not accessible outside this class
+    # keep the head private. Not accessible outside this class.
+    @head = nil
   end
 
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    if @head == nil
+      @head = Node.new(value)
+    else
+      current = @head
+      @head = Node.new(value)
+      @head.next = current
+    end
   end
+  # if order doesn't matter and you make the new value at the head.
+  # Time complexity: O(1) because only add one thing at the beginning.
+  # Space complexity: O(1) because the space complexity doesn't change no matter the length of the linked list.
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    current = @head
+    #traverse through all the nodes until the end
+    while current != nil
+      #check if this node's data is the value
+      if current.data == value
+        #return true if found
+        return true
+      else
+        current = current.next
+        #end traversing through the list
+      end
+    end
+    #return false because didn't find the value
+    return false
   end
 
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    return nil if @head == nil
+    max = @head.data
+    current = @head
+    while current != nil
+      if current.data > max
+        max = current.data
+      end
+      current = current.next
+    end
+    return max
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    puts "Not implemented"
+    return nil if @head == nil
+    min = @head.data
+    current = @head
+    while current != nil
+      if current.data < min
+        min = current.data
+      end
+      current = current.next
+    end
+    return min
   end
 
   # method that returns the length of the singly linked list
   def length
-    puts "Not implemented"
+    if @head == nil
+      return 0
+    else
+      current = @head
+      count = 0
+      while current != nil
+        count += 1
+        current = current.next
+      end
+      return count
+    end
   end
 
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    if @head == nil
+      return "Empty list"
+    else
+      counter = 0
+      current = @head
+      until counter == n
+        current = current.next
+        counter += 1
+      end
+    # print current.data
+    return current.data
+    end
   end
 
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    if @head == nil
+      @head = Node.new(value)
+    else
+      current = @head
+      while current != nil
+        if current.next == nil
+          current.next = Node.new(value)
+          return
+        elsif current.next.data > value && current.next != nil
+          temp = current.next
+          current.next = Node.new(value)
+          current.next.next = temp
+          return
+        end
+        current = current.next
+      end
+    end
   end
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    current = @head
+    while current != nil
+      print current.data
+      current = current.next
+    end
+    print "\n"
   end
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    if @head == nil
+      return
+    elsif @head.data == value
+      @head = @head.next
+    else
+     current = @head
+     while current.next != nil
+       if current.next.data == value
+         current.next = current.next.next
+       end
+       current = current.next
+     end
+     return
+   end
   end
+  # time complexity: O(n).  O(n) for searching (if it's at the end - have to traverse the whole list to find the item to delete.)
+  # space complexity: O(1). Storage won't change at all no matter the length of the list.
 
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
-    puts "Not implemented"
+    current = @head
+    previous = nil
+    temp = current.next
+    until current == nil
+      temp = current.next
+      current.next = previous
+      previous = current
+      current = temp
+    end
+      @head = previous
   end
+  # time complexity O(n)
+  # space compelxity O(1)
 
   ## Advanced Exercises
   # returns the value at the middle element in the singly linked list
+  # slow reference points at head, fast reference points at head's next
+  # while fast is not nil
+  # update slow to slow's next
+  # update fast to fast's next
+    # if fast != nil
+    # update fast to fast's next
   def find_middle_value
-    puts "Not implemented"
+    if @head == nil
+      return
+    elsif @head.next == nil
+      return @head.data
+    else
+      slow = @head
+      fast = @head.next
+      while fast != nil
+        slow = slow.next
+        fast = fast.next
+        if fast != nil
+          fast = fast.next
+        end
+      end
+      return slow.data
+    end
   end
+  # time complexity O(n), go through the list 1.5 times.  But ultimately, only go through the one loop one time.
+  # space complexity O(1), not creating anything, size we are alocating doesn't change anything
 
   # find the nth node from the end and return its value
   # assume indexing starts at 0 while counting to n
+  # this doesn't handle the condition when the LL is not as long as n, does it?  Can you please advise?
   def find_nth_from_end(n)
-    puts "Not implemented"
+    if @head == nil
+      return
+    else
+      i = 0
+      current = @head
+      until i == n
+         current = current.next
+         i += 1
+      end
+      trailingCurrent = @head
+      until current.next == nil
+        current = current.next
+        trailingCurrent = trailingCurrent.next
+      end
+      return trailingCurrent.data
+    end
   end
+  # time complexity Tamiko's: O(count), twice through O(2n)
+  # space complexity Tamiko's: O(1)
 
   # checks if the linked list has a cycle. A cycle exists if any node in the
   # linked list links to a node already visited.
   # returns true if a cycle is found, false otherwise.
+  # use slow and fast
+  # both start at head
+  # slow moves one
+  # fast moves twice as fast
+  # if fast == slow we have a cycle
+  # if fast gets to nil, not a cycle
   def has_cycle
-    puts "Not implemented"
+    if @head == nil
+      return false
+    elsif @head.next == nil
+      return false
+    else
+      slow = @head
+      fast = @head
+      while fast != nil
+        slow = slow.next
+        fast = fast.next
+          if fast != nil
+            fast = fast.next
+          end
+          if fast == slow
+            return true
+          end
+      end
+      return false
+    end
   end
+  # time complexity O(n) - because it's still a factor of n
+  # space complexity O(1) - because we only have fast and slow
+  # test cases?
+  # if head is nil
+  # even number of nodes, odd number of nodes
+  # if one node that points at itself...
 
   # Creates a cycle in the linked list for testing purposes
   # Assumes the linked list has at least one node
   def create_cycle
-    return if @head == nil # don't do anything if the linked list is empty
-
+    #   return if @head == nil # don't do anything if the linked list is empty
+    if @head == nil
+      return
+    else
     # navigate to last node
     current = @head
     while current.next != nil
       current = current.next
     end
-
-    current.next = @head # make the last node link to first node
+    # make the last node link to first node
+    current.next = @head
+    end
   end
 end
 
