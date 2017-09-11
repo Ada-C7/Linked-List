@@ -1,4 +1,3 @@
-
 # Defines a node in the singly linked list
 class Node
   attr_reader :data # allow external entities to read value but not write
@@ -13,23 +12,43 @@ end
 # Defines the singly linked list
 class LinkedList
   def initialize
-    @head = nil # keep the head private. Not accessible outside this class
+    # keep the head private. Not accessible outside this class
+    @head = nil
   end
 
-  # method to add a new node with the specific data value in the linked list
-  # insert the new node at the beginning of the linked list
+  # ----------
+  # time: O(1) / Constant
+  # the node is always added at the beginning so the time
+  # it takes is independent of how long the linked list is
+
+  # space: O(1) / Constant
+  # the variables are independent of the size of the linked list
   def insert(value)
+    # create a new node
     next_node = Node.new(value)
 
-    if @head != nil
+    # if the head is empty, make the head the new node
+    if @head == nil
+      @head = next_node
+
+    # if there's an exisiitng head
+    # update the new node's next to be the existing head
+    # and make the new node the head
+    else
       next_node.next = @head
+      @head = next_node
     end
 
-    @head = next_node
+    return
   end
 
-  # method to find if the linked list contains a node with specified value
-  # returns true if found, false otherwise
+  # ----------
+  # time: O(n) / Linear
+  # the time it takes to search all nodes is dependent
+  # on the length of the linked list (n)
+
+  # space: O(1) / Constant
+  # the variables are independent of the size of the linked list
   def search(value)
     current = @head
 
@@ -44,8 +63,13 @@ class LinkedList
     return false
   end
 
-  # method to return the max value in the linked list
-  # returns the data value and not the node
+  # ----------
+  # time: O(n) / Linear
+  # the time it takes to search all nodes for the max value
+  # is dependent on the length of the linked list (n)
+
+  # space: O(1) / Constant
+  # the variables are independent of the size of the linked list
   def find_max
     if @head == nil
       puts "empty head. max is nil"
@@ -66,8 +90,13 @@ class LinkedList
     return max
   end
 
-  # method to return the min value in the linked list
-  # returns the data value and not the node
+  # ----------
+  # time: O(n) / Linear
+  # the time it takes to search all nodes for the min value
+  # is dependent on the length of the linked list (n)
+
+  # space: O(1) / Constant
+  # the varaibles used are independent of the size of the linked list
   def find_min
     if @head == nil
       puts "head empty. min is nil"
@@ -88,7 +117,13 @@ class LinkedList
     return min
   end
 
-  # method that returns the length of the singly linked list
+  # ----------
+  # time: O(n) / Linear
+  # the time it takes to count all nodes is
+  # dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # the variables used are independet of the size of the linked list
   def length
     current = @head
     length = 0
@@ -101,8 +136,13 @@ class LinkedList
     return length
   end
 
-  # method to return the value of the nth element from the beginning
-  # assume indexing starts at 0 while counting to n
+  # ----------
+  # time: O(n) / linear
+  # is dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # vairables used are independent of the size of the linked list
+  # QUESTION: what is this supposed to do if x > linkedlist length?
   def find_nth_from_beginning(n)
     current = @head
     index = 0
@@ -117,8 +157,13 @@ class LinkedList
     end
   end
 
-  # method to insert a new node with specific data value, assuming the linked
-  # list is sorted in ascending order
+  # ----------
+  # time: O(n) / linear
+  # the time it takes to insert in ascending order
+  # is dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # the variables used are independent of the size of the linked list
   def insert_ascending(value)
     current = @head
     new_node = Node.new(value)
@@ -137,7 +182,13 @@ class LinkedList
     current.next = new_node
   end
 
-  # method to print all the values in the linked list
+  # ----------
+  # time: 0(n) / Linear
+  # the time it takes to visit each node in the linked
+  # list is dependent on the size of the linked list
+
+  # space: 0(1) / Constant
+  # the variables used are independent of the size of the linked list
   def visit
     current = @head
 
@@ -148,7 +199,12 @@ class LinkedList
     end
   end
 
-  # method to delete the first node found with specified value
+  # ----------
+  # time: 0(n) / Linear
+  # Each node may be visited to determine if there's a node to be deleted
+
+  # space: 0(1) / Constant
+  # the variables used are independent of the size of the linked list
   def delete(value)
     if @head == nil
       puts "Error: Linked list empty - nothing to delete!"
@@ -171,43 +227,167 @@ class LinkedList
     end
   end
 
-  # method to reverse the singly linked list
+  # ----------
   # note: the nodes should be moved and not just the values in the nodes
+  # adjusting the link to point to 'previous' rather than next
+
+  # time: O(n) / Linear
+  # To reverse  a linked list each node is visited once,
+  # therefore the time is dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # the variables used are independent of the size of the linked list
   def reverse
-    puts "Not implemented"
+    current = @head
+    previous = nil
+
+    if current == nil # doesn't need to be reversed if empty
+      return
+    end
+
+    while current != nil
+      temp = current.next
+      current.next = previous
+
+      # move to next
+      previous = current
+      current = temp
+    end
+
+    @head = previous
   end
 
-  ## Advanced Exercises
-  # returns the value at the middle element in the singly linked list
+  # ----------
+  # time: O(n) / linear
+  # the time it takes to find the middle value is
+  # dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # the variables used are independent of the size of the linked list
   def find_middle_value
-    puts "Not implemented"
+    if @head == nil
+      return
+    end
+
+    if @head.next == nil
+      return @head
+    end
+
+    slow = @head
+    fast = @head.next
+
+    while fast != nil
+      slow = slow.next
+      fast = fast.next
+
+      if fast != nil
+        fast = fast.next
+      end
+    end
+
+    return slow.data
   end
 
-  # find the nth node from the end and return its value
-  # assume indexing starts at 0 while counting to n
+  # ----------
+  # time: O(n) / Linear
+  # time is dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # variables used are independent of the size of the linked list
   def find_nth_from_end(n)
-    puts "Not implemented"
+    # approach with going through the linked list just once
+    # assume indexing starts at 0 while counting to n
+    current = @head
+    index = 0
+
+    # count to n from the beginning
+    while current != nil && index != n
+      current = current.next
+      index += 1
+    end
+
+    # check that we didn't reach the end
+    if current == nil
+      puts "Error: The linked list has less than #{n} indexable nodes"
+      return
+    end
+
+    # the previous while loop exited because of index == n condition
+    # start a new traverser at the beginning.
+    # when current reaches the end, new_current will be at index n from the end
+    new_current = @head
+    while current.next != nil
+      current = current.next
+      new_current = new_current.next
+    end
+
+    return new_current.data
   end
 
-  # checks if the linked list has a cycle. A cycle exists if any node in the
-  # linked list links to a node already visited.
-  # returns true if a cycle is found, false otherwise.
+  # ----------
+  # uses Floyd's cycle algorithm
+
+  # time: O(n) / linear
+  # the time it takes to determine if there is a
+  # cycle is dependent on the size of the linked list
+
+  # space: O(1) / Constant
+  # the variables used are independent of the size of the linked list
   def has_cycle
-    puts "Not implemented"
+    # if the linked list is empty or contains
+    # only one node there is no cycle
+    if @head == nil || @head.next == nil
+     return false
+    end
+
+    # create a fast pointer and a slow pointer
+    # both pointing to the head node
+    slow = @head
+    fast = @head
+
+    # move the slow pointer one step and the fast pointer
+    # two steps in a loop
+    # if they point to the same node then there is a loop
+    while fast != nil
+     slow = slow.next
+     fast = fast.next
+     if fast != nil
+       fast = fast.next
+     end
+
+     # cycle found
+     if slow == fast
+       return true
+     end
+    end
+
+    # if we have reached the end there's no cycle
+    return false
   end
 
-  # Creates a cycle in the linked list for testing purposes
-  # Assumes the linked list has at least one node
-  def create_cycle
-    return if @head == nil # don't do anything if the linked list is empty
+  # ----------
+  # time: O(n) / Linear
+  # the amounf of time is dependent on the size of the
+  # linked list because we must go through all nodes
+  # in order to find the end
 
-    # navigate to last node
+  # space: O(1) / Constant
+  # The variables used are independent of the
+  # size of the linked list
+  def create_cycle
+    # exit if the linked list is empty
+    if @head == nil
+      return
+    end
+
+    # find the last node
     current = @head
     while current.next != nil
       current = current.next
     end
 
-    current.next = @head # make the last node link to first node
+    # make the last node's 'next' point to the head
+    current.next = @head
   end
 end
 
