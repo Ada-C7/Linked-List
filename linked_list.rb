@@ -19,78 +19,263 @@ class LinkedList
   # method to add a new node with the specific data value in the linked list
   # insert the new node at the beginning of the linked list
   def insert(value)
-    puts "Not implemented"
+    new_node = Node.new(value)
+
+    if @head != nil # if linked list is not empty
+      new_node.next = @head
+    end
+
+    @head = new_node
   end
+
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
   def search(value)
-    puts "Not implemented"
+    current = @head
+
+    while current !=nil
+      if current.data == value
+        return true
+      end
+
+      current = current.next
+    end
+
+    return false
   end
 
   # method to return the max value in the linked list
   # returns the data value and not the node
   def find_max
-    puts "Not implemented"
+    if @head == nil
+      puts "Error: The linked list is empty. Cannot compute max."
+      return nil
+    end
+
+    current = @head
+    max = current.data
+
+    while current != nil
+      if current.data > max
+        max = current.data
+      end
+      current = current.next
+    end
+    return max
   end
 
   # method to return the min value in the linked list
   # returns the data value and not the node
   def find_min
-    puts "Not implemented"
+    if @head == nil
+      puts "Error: The linked list is empty. Cannot compute min."
+      return nil
+    end
+
+    current = @head
+    min = current.data
+
+    while current != nil
+      if current.data < min
+        min = current.data
+      end
+      current = current.next
+    end
+    return min
   end
 
   # method that returns the length of the singly linked list
   def length
-    puts "Not implemented"
+    length = 0
+    current = @head
+
+    while current != nil
+      length +=1
+      current = current.next
+    end
+    return length
   end
 
   # method to return the value of the nth element from the beginning
   # assume indexing starts at 0 while counting to n
   def find_nth_from_beginning(n)
-    puts "Not implemented"
+    index = 0
+    current = @head
+
+    while current != nil
+      if index == n
+        return current.data
+      end
+      current = current.next
+      index += 1
+    end
+    puts "Error: Linked list has fewer than n elements."
+    return nil
   end
 
   # method to insert a new node with specific data value, assuming the linked
   # list is sorted in ascending order
   def insert_ascending(value)
-    puts "Not implemented"
+    new_node = Node.new(value)
+
+    if @head == nil
+      @head = new_node
+      return
+    end
+
+    if @head.data > value
+      new_node.next = @head
+      @head = new_node
+      return
+    end
+
+    current = @head
+
+    while current.next != nil
+      if current.next.data > value
+        new_node.next = current.next
+        current.next = new_node
+        return
+      end
+      current = current.next
+    end
+
+    current.next  = new_node
+    new_node.next = nil
+
   end
+
 
   # method to print all the values in the linked list
   def visit
-    puts "Not implemented"
+    if @head == nil
+      puts "Error: Linked list is empty. No values to print."
+      return nil
+    end
+    current = @head
+    while current != nil
+      puts "#{current.data}"
+      current = current.next
+    end
   end
 
   # method to delete the first node found with specified value
   def delete(value)
-    puts "Not implemented"
+    if @head == nil
+      return
+    end
+
+    if @head.data == value
+      @head = @head.next
+      return
+    end
+
+    current = @head
+    while current.next != nil
+      if current.next.data == value
+        current.next = current.next.next
+        return
+      end
+      current = current.next
+    end
   end
+
 
   # method to reverse the singly linked list
   # note: the nodes should be moved and not just the values in the nodes
   def reverse
-    puts "Not implemented"
+
+    current = @head
+    previous = nil
+
+    while current !=nil
+      temp = current.next
+      current.next = previous
+      previous = current
+      current = temp
+    end
+
+    @head = previous
   end
 
   ## Advanced Exercises
   # returns the value at the middle element in the singly linked list
   def find_middle_value
-    puts "Not implemented"
+    if @head == nil
+      return nil
+    end
+
+    slow = @head
+    fast = @head.next
+
+    while fast !=nil
+      fast = fast.next
+      slow = slow.next
+      if fast!= nil
+        fast = fast.next
+      end
+    end
+    return slow.data
   end
 
   # find the nth node from the end and return its value
   # assume indexing starts at 0 while counting to n
   def find_nth_from_end(n)
-    puts "Not implemented"
+
+    current = @head
+
+    count = 0
+    while ((current !=nil) && (count != n))
+      count  +=1
+      current = current.next
+    end
+
+    if current == nil
+      puts "Fewer than n items in Linked List"
+      return
+    end
+
+    behind = @head
+    ahead = current
+    while ahead.next !=nil
+      ahead = ahead.next
+      behind = behind.next
+    end
+
+    return behind.data
+
   end
+
+
+
 
   # checks if the linked list has a cycle. A cycle exists if any node in the
   # linked list links to a node already visited.
   # returns true if a cycle is found, false otherwise.
   def has_cycle
-    puts "Not implemented"
+
+    if @head == nil || @head.next == nil
+      return false
+    end
+
+    slow = @head
+    fast = @head
+
+    while fast !=nil
+      fast = fast.next
+      slow = slow.next
+
+      if fast!= nil
+        fast = fast.next
+      end
+      if fast == slow
+        return true
+      end
+    end
+    return false
   end
+
 
   # Creates a cycle in the linked list for testing purposes
   # Assumes the linked list has at least one node
@@ -177,6 +362,11 @@ my_linked_list.visit
 puts "Confirming length of the linked list."
 my_linked_list_length = my_linked_list.length
 puts "BUG: Length should be 4 and not #{my_linked_list_length}" if my_linked_list_length != 4
+
+
+
+
+
 
 # delete value
 puts "Deleting node with value 1 from the linked list."
