@@ -131,21 +131,30 @@ class LinkedList
     temp = current
 
     if @head == nil
-      return 0
-    elsif @head.data == value
-      return @head
-    else
-      while current.next != nil
-        if newNode.data > current.data && newNode.data < current.next.data
-          temp = current.next
-          current.next = newNode
-          newNode.next = temp
-          return newNode
-        else
-          current = current.next
-        end
+      @head = newNode
+      return
+    end
+
+    if @head.data > value
+      newNode.next = @head
+      @head = newNode
+      return
+    end
+
+    while current.next != nil
+      if value < current.next.data
+        temp = current.next
+        current.next = newNode
+        newNode.next = temp
+        return
+      else
+        current = current.next
       end
     end
+
+    current.next = newNode
+    newNode.next = nil
+
   end
 
   # method to print all the values in the linked list
@@ -161,63 +170,143 @@ class LinkedList
     end
   end
 
-  # # method to delete the first node found with specified value
-  # def delete(value)
-  #   current = @head
-  #
-  #   if @head == nil
-  #     return 0
-  #   elsif @head == value
-  #     @head = value.next
-  #   else
-  #     while current.next != nil
-  #       if current.next == value
-  #         current.next = value.next
-  #       end
-  #     end
-  #   end
-  #
-  #
-  # end
-#
-#   # method to reverse the singly linked list
-#   # note: the nodes should be moved and not just the values in the nodes
-#   def reverse
-#     puts "Not implemented"
-#   end
-#
-#   ## Advanced Exercises
-#   # returns the value at the middle element in the singly linked list
-#   def find_middle_value
-#     puts "Not implemented"
-#   end
-#
-#   # find the nth node from the end and return its value
-#   # assume indexing starts at 0 while counting to n
-#   def find_nth_from_end(n)
-#     puts "Not implemented"
-#   end
-#
-#   # checks if the linked list has a cycle. A cycle exists if any node in the
-#   # linked list links to a node already visited.
-#   # returns true if a cycle is found, false otherwise.
-#   def has_cycle
-#     puts "Not implemented"
-#   end
-#
-#   # Creates a cycle in the linked list for testing purposes
-#   # Assumes the linked list has at least one node
-#   def create_cycle
-#     return if @head == nil # don't do anything if the linked list is empty
-#
-#     # navigate to last node
-#     current = @head
-#     while current.next != nil
-#       current = current.next
-#     end
-#
-#     current.next = @head # make the last node link to first node
-  # end
+  # method to delete the first node found with specified value
+  def delete(value)
+    current = @head
+
+    if @head == nil
+      return 0
+    elsif @head.data == value
+      @head = current.next
+    else
+      while current.next != nil
+        if current.next.data == value
+          current.next = current.next.next
+          return
+        else
+          current = current.next
+        end
+      end
+    end
+
+  end
+
+  # method to reverse the singly linked list
+  # note: the nodes should be moved and not just the values in the nodes
+  def reverse
+    current = @head
+    previous = nil
+    temp = current.next
+
+    if @head == nil
+      return 0
+    else
+      while current != nil
+        temp = current.next
+        current.next = previous
+        previous = current
+        current = temp
+      end
+    end
+
+    @head = previous
+
+  end
+
+
+  ## Advanced Exercises
+  # returns the value at the middle element in the singly linked list
+  def find_middle_value
+    fast = @head.next
+    slow = @head
+
+    if @head == nil
+      return 0
+    elsif @head.next == nil
+      return @head
+    end
+
+    while fast != nil
+      fast = fast.next
+      slow = slow.next
+      if fast != nil
+        fast = fast.next
+      end
+    end
+
+    return slow.data
+  end
+
+  # find the nth node from the end and return its value
+  # assume indexing starts at 0 while counting to n
+  def find_nth_from_end(n)
+    current = @head
+    counter = 0
+    trailingPointer = @head
+
+    if @head == nil
+      return 0
+    end
+
+    until current.next == nil
+      current = current.next
+      counter += 1
+      if counter > n
+        trailingPointer = trailingPointer.next
+      end
+    end
+    return trailingPointer.data
+
+  end
+
+  # checks if the linked list has a cycle. A cycle exists if any node in the
+  # linked list links to a node already visited.
+  # returns true if a cycle is found, false otherwise.
+  def has_cycle
+    fastPointer = @head
+    slowPointer = @head
+
+    if @head == nil
+      return 0
+    end
+
+    if @head.next == nil
+      return false
+    end
+
+    while fastPointer != nil
+      fastPointer = fastPointer.next
+      slowPointer = slowPointer.next
+
+      if fastPointer != nil
+        fastPointer = fastPointer.next
+      else
+        return false
+      end
+
+      if fastPointer == slowPointer
+        return true
+      end
+    end
+
+    return false
+
+
+  end
+
+  # Creates a cycle in the linked list for testing purposes
+  # Assumes the linked list has at least one node
+  def create_cycle
+    return if @head == nil # don't do anything if the linked list is empty
+
+    # navigate to last node
+    current = @head
+    while current.next != nil
+      current = current.next
+    end
+
+    current.next = @head # make the last node link to first node
+  end
 end
 
 ## --- END of class definitions --- ##
@@ -279,65 +368,65 @@ puts "Confirming min and max values in the linked list."
 min = my_linked_list.find_min
 puts "BUG: Min value should be 1 and not #{min}" if min != 1
 max = my_linked_list.find_max
-puts "BUG: Max value should be 5 and not #{max}" if max != 5
-#
-# # delete value
-# puts "Deleting node with value 5 from the linked list."
-# my_linked_list.delete(5)
-# # print all elements
-# puts "Printing elements in the linked list:"
-# my_linked_list.visit
-# # validate length
-# puts "Confirming length of the linked list."
-# my_linked_list_length = my_linked_list.length
-# puts "BUG: Length should be 4 and not #{my_linked_list_length}" if my_linked_list_length != 4
-#
-# # delete value
-# puts "Deleting node with value 1 from the linked list."
-# my_linked_list.delete(1)
-# # print all elements
-# puts "Printing elements in the linked list:"
-# my_linked_list.visit
-# # validate length
-# puts "Confirming length of the linked list."
-# my_linked_list_length = my_linked_list.length
-# puts "BUG: Length should be 3 and not #{my_linked_list_length}" if my_linked_list_length != 3
+puts "BUG: Max value should be 6 and not #{max}" if max != 6
 
-# # find middle element
-# puts "Confirming middle value in the linked list."
-# middle = my_linked_list.find_middle_value
-# puts "BUG: Middle value should be 4 and not #{middle}" if middle != 4
-#
-# # reverse the linked list
-# puts "Reversing the linked list."
-# my_linked_list.reverse
-# # print all elements
-# puts "Printing elements in the linked list:"
-# my_linked_list.visit
-# # verify the reversed list
-# puts "Verifying the reveresed linked list by calling find_nth_from_beginning method."
-# value = my_linked_list.find_nth_from_beginning(2)
-# puts "BUG: Value at index 2 should be 3 and is #{value}" if value != 3
-# value = my_linked_list.find_nth_from_beginning(1)
-# puts "BUG: Value at index 1 should be 4 and is #{value}" if value != 4
-# value = my_linked_list.find_nth_from_beginning(0)
-# puts "BUG: Value at index 0 should be 6 and is #{value}" if value != 6
-#
-# # nth from the end
-# puts "Verifying find_nth_from_end method."
-# value = my_linked_list.find_nth_from_end(0)
-# puts "BUG: Value at index 0 from the end, should be 3 and is #{value}" if value != 3
-# value = my_linked_list.find_nth_from_end(1)
-# puts "BUG: Value at index 1 from the end, should be 4 and is #{value}" if value != 4
-# value = my_linked_list.find_nth_from_end(2)
-# puts "BUG: Value at index 2 from the end, should be 6 and is #{value}" if value != 6
-#
-# # check for cycle
-# puts "Checking the linked list for cycle."
-# puts "BUG: Should not have a cycle." if my_linked_list.has_cycle
-#
-# # create cycle and then test for it
-# puts "Creating a cycle in the linked list."
-# my_linked_list.create_cycle
-# puts "Checking the linked list for cycle."
-# puts "BUG: Should not have a cycle." if !(my_linked_list.has_cycle)
+# delete value
+puts "Deleting node with value 5 from the linked list."
+my_linked_list.delete(5)
+# print all elements
+puts "Printing elements in the linked list:"
+my_linked_list.visit
+# validate length
+puts "Confirming length of the linked list."
+my_linked_list_length = my_linked_list.length
+puts "BUG: Length should be 4 and not #{my_linked_list_length}" if my_linked_list_length != 4
+
+# delete value
+puts "Deleting node with value 1 from the linked list."
+my_linked_list.delete(1)
+# print all elements
+puts "Printing elements in the linked list:"
+my_linked_list.visit
+# validate length
+puts "Confirming length of the linked list."
+my_linked_list_length = my_linked_list.length
+puts "BUG: Length should be 3 and not #{my_linked_list_length}" if my_linked_list_length != 3
+
+# find middle element
+puts "Confirming middle value in the linked list."
+middle = my_linked_list.find_middle_value
+puts "BUG: Middle value should be 4 and not #{middle}" if middle != 4
+
+# reverse the linked list
+puts "Reversing the linked list."
+my_linked_list.reverse
+# print all elements
+puts "Printing elements in the linked list:"
+my_linked_list.visit
+# verify the reversed list
+puts "Verifying the reveresed linked list by calling find_nth_from_beginning method."
+value = my_linked_list.find_nth_from_beginning(2)
+puts "BUG: Value at index 2 should be 3 and is #{value}" if value != 3
+value = my_linked_list.find_nth_from_beginning(1)
+puts "BUG: Value at index 1 should be 4 and is #{value}" if value != 4
+value = my_linked_list.find_nth_from_beginning(0)
+puts "BUG: Value at index 0 should be 6 and is #{value}" if value != 6
+
+# nth from the end
+puts "Verifying find_nth_from_end method."
+value = my_linked_list.find_nth_from_end(0)
+puts "BUG: Value at index 0 from the end, should be 3 and is #{value}" if value != 3
+value = my_linked_list.find_nth_from_end(1)
+puts "BUG: Value at index 1 from the end, should be 4 and is #{value}" if value != 4
+value = my_linked_list.find_nth_from_end(2)
+puts "BUG: Value at index 2 from the end, should be 6 and is #{value}" if value != 6
+
+# check for cycle
+puts "Checking the linked list for cycle."
+puts "BUG: Should not have a cycle." if my_linked_list.has_cycle
+
+# create cycle and then test for it
+puts "Creating a cycle in the linked list."
+my_linked_list.create_cycle
+puts "Checking the linked list for cycle."
+puts "BUG: Should not have a cycle." if !(my_linked_list.has_cycle)
