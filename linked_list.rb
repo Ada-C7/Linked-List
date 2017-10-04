@@ -18,6 +18,7 @@ class LinkedList
 
     # method to add a new node with the specific data value in the linked list
     # insert the new node at the beginning of the linked list
+    # Shruti: Just for added practice, I recommend adding time and space complexities as comment before each method
     def insert(value)
         new_node = Node.new(value)
 
@@ -47,7 +48,7 @@ class LinkedList
             node = node.next
         end
 
-        largest_node.data
+        largest_node.data # Shruti: check that @head is not nil before doing this.
     end
 
     # method to return the min value in the linked list
@@ -60,7 +61,7 @@ class LinkedList
             node = node.next
         end
 
-        smallest_node.data
+        smallest_node.data #Shruti: Confirm that the list is not empty aka the head is not nil.
     end
 
     # method that returns the length of the singly linked list
@@ -81,7 +82,7 @@ class LinkedList
     def find_nth_from_beginning(n)
         node = @head
         n.times do
-            return false if node.next.nil?
+            return false if node.next.nil? #Shruti: As a side note, this is good to discuss with the interviewer. Return nil, throw exceptions
             node = node.next
         end
         node.data
