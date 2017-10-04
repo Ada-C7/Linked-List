@@ -31,10 +31,11 @@ class LinkedList
 
   # method to find if the linked list contains a node with specified value
   # returns true if found, false otherwise
+  # Shruti: I recommend adding comments in time and space complexities before each method for additional practice.
   def search(value)
     node = @head
       while node != nil
-        if node == value
+        if node == value # Shruti: This should be "if node.data == value"
           return true
         end
         node = node.next
@@ -46,7 +47,7 @@ class LinkedList
   # returns the data value and not the node
   def find_max
     node = @head
-    max = @head.data
+    max = @head.data # Shruti: check if @head is nil before trying to access data
     until node == nil
       if node.data > max
         max = node.data
@@ -60,7 +61,7 @@ class LinkedList
   # returns the data value and not the node
   def find_min
     node = @head
-    min = @head.data
+    min = @head.data # Shruti: check if @head is nil before trying to access data
     until node == nil
       if node.data < min
         min = node.data
