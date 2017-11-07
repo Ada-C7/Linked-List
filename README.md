@@ -1,5 +1,5 @@
 # Linked List in Go
-This was an assignment completed during my time at Ada Developers Academy. It implements methods for a linked list, along with a test suite, written in Go.
+Assignment completed during my time at Ada Developers Academy. It implements methods for a linked list, along with a test suite, written in Go.
 
 Original instructions below:
 
